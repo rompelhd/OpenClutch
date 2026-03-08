@@ -3,11 +3,6 @@
 OpenClutch is a launcher for Assetto Corsa designed specifically for Linux.  
 It is open source and aims to make managing the game easier, including features like drag-and-drop mod installation.
 
-The project is currently under development.
-
-OpenClutch is a launcher for Assetto Corsa designed specifically for Linux.  
-It is open source and aims to make managing the game easier, including features like drag-and-drop mod installation.
-
 The goal of OpenClutch is to become the only fully free and open-source alternative for launching and managing Assetto Corsa on Linux.
 
 The project is currently under development.
