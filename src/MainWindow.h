@@ -1,12 +1,10 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
-#include <QListWidget>
-#include <QPushButton>
-#include <QTableWidget>
-#include <QComboBox>
-#include "ACManager.h"
+#include <QStackedWidget>
+
+class SinglePlayerScreen;
+class ACManager;
 
 class MainWindow : public QMainWindow
 {
@@ -15,19 +13,12 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
 
-private slots:
-    void onLaunchClicked();
-
 private:
+
     ACManager* acManager;
 
-    QListWidget* carsList;
-    QListWidget* tracksList;
-    QTableWidget* carInfoTable;
-    QPushButton* launchButton;
+    QStackedWidget* stacked;
 
-    QComboBox* brandFilter;
-    QComboBox* classFilter;
+    SinglePlayerScreen* singleScreen;
+    QWidget* onlineScreen;
 };
-
-#endif // MAINWINDOW_H

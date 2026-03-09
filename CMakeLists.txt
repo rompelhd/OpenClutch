@@ -14,6 +14,10 @@ add_executable(OpenACLauncher
     src/MainWindow.cpp
     src/ACManager.cpp
     src/SettingsDialog.cpp
+
+    src/SinglePlayerScreen.cpp
+    src/CarSelectorDialog.cpp
+    src/SkinSelectorDialog.cpp
 )
 
 find_package(nlohmann_json REQUIRED)
