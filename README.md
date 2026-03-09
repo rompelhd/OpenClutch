@@ -9,4 +9,4 @@ The project is currently under development.
 
 A screenshot of how the development is going:
 
-<img width="1917" height="1029" alt="image" src="https://github.com/user-attachments/assets/2e4deddc-85d4-4a77-a00a-bbaec7b723c7" />
+<img width="1867" height="990" alt="image" src="https://github.com/user-attachments/assets/851012dc-9ccf-4ce9-9b8d-7ca037ff1361" />
