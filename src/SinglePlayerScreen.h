@@ -45,10 +45,16 @@ private:
     QLabel* tempLabel;
     QSlider* tempSlider;
 
+    // ---------------- TRACK CONDITIONS ----------------
+    QLabel* trackCondLabel;
+    QSlider* windSlider;
+
     // ---------------- SELECTION DATA ----------------
     std::string selectedCar;
     std::string selectedSkin;
+    std::string selectedTrack;
 
     // ---------------- METHODS ----------------
     void openCarSelector();
+    void openTrackSelector();
 };

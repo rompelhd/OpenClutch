@@ -18,6 +18,7 @@ add_executable(OpenACLauncher
     src/SinglePlayerScreen.cpp
     src/CarSelectorDialog.cpp
     src/SkinSelectorDialog.cpp
+    src/CircuitSelectorDialog.cpp
 )
 
 find_package(nlohmann_json REQUIRED)

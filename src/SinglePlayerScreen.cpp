@@ -1,5 +1,6 @@
 #include "SinglePlayerScreen.h"
 #include "CarSelectorDialog.h"
+#include "CircuitSelectorDialog.h"
 #include "ACManager.h"
 
 #include <QHBoxLayout>
@@ -38,41 +39,35 @@ SinglePlayerScreen::SinglePlayerScreen(
 
     carButtonLayout->addWidget(carImage);
     carButtonLayout->addWidget(carName);
-
+    carButtonLayout->setContentsMargins(0,0,0,0);
     carButton->setLayout(carButtonLayout);
 
     QVBoxLayout* carLayout = new QVBoxLayout;
 
     QLabel* bestLapLabel = new QLabel("Best lap: No info");
-
     QLabel* bestLapTrackTitle = new QLabel("Best lap on this track:");
     QLabel* bestLapTrack = new QLabel("Ferrari gt30       01:53:141");
-
     QLabel* drivenCar = new QLabel("Driven in car: 100.2 km");
     QLabel* drivenTrack = new QLabel("Driven on track: 1203.2 km");
 
     carLayout->addWidget(carButton);
     carLayout->addSpacing(6);
     carLayout->addWidget(bestLapLabel);
-
     carLayout->addSpacing(8);
     carLayout->addWidget(bestLapTrackTitle);
     carLayout->addWidget(bestLapTrack);
-
     carLayout->addSpacing(8);
     carLayout->addWidget(drivenCar);
     carLayout->addWidget(drivenTrack);
 
     // -------- Profile --------
     carLayout->addSpacing(10);
-
     QLabel* profileLabel = new QLabel("Profile:");
     QComboBox* profileCombo = new QComboBox;
     profileCombo->setMaximumWidth(220);
     profileCombo->addItems({"Pro","Amateur","Casual"});
     carLayout->addWidget(profileLabel);
     carLayout->addWidget(profileCombo);
-
     carLayout->addSpacing(6);
 
     QCheckBox* tyreBlanketsCheck = new QCheckBox("Tyre blankets");
@@ -82,13 +77,13 @@ SinglePlayerScreen::SinglePlayerScreen(
 
     carLayout->addStretch();
 
-    // ---------------- TRACK ----------------
+    // ---------------- TRACK BUTTON ----------------
     QVBoxLayout* trackLayout = new QVBoxLayout;
     trackButton = new QPushButton;
     trackButton->setFixedSize(220,140);
 
     trackImage = new QLabel;
-    trackImage->setFixedSize(220,140);
+    trackImage->setFixedSize(220,110);
     trackImage->setScaledContents(true);
 
     trackName = new QLabel("Select Track");
@@ -116,7 +111,6 @@ SinglePlayerScreen::SinglePlayerScreen(
     // ---------------- CHECKBOXES ----------------
     realConditionsCheck = new QCheckBox("Real conditions");
     idealConditionsCheck = new QCheckBox("Ideal conditions");
-
     idealConditionsCheck->setMaximumWidth(220);
     realConditionsCheck->setMaximumWidth(220);
 
@@ -124,7 +118,6 @@ SinglePlayerScreen::SinglePlayerScreen(
         if(state == Qt::Checked)
             idealConditionsCheck->setChecked(false);
     });
-
     connect(idealConditionsCheck, &QCheckBox::checkStateChanged, [this](Qt::CheckState state){
         if(state == Qt::Checked)
             realConditionsCheck->setChecked(false);
@@ -135,7 +128,6 @@ SinglePlayerScreen::SinglePlayerScreen(
     checkLayout->addWidget(idealConditionsCheck);
 
     timeLayout->setSpacing(13);
-
     timeLayout->addWidget(timeLabel);
     timeLayout->addWidget(timeSlider);
     timeLayout->addLayout(checkLayout);
@@ -145,9 +137,7 @@ SinglePlayerScreen::SinglePlayerScreen(
 
     // ---------------- TEMPERATURE ----------------
     QVBoxLayout* tempLayout = new QVBoxLayout;
-
     tempLabel = new QLabel("Temp 20°C");
-
     tempSlider = new QSlider(Qt::Horizontal);
     tempSlider->setRange(-10,35);
     tempSlider->setValue(20);
@@ -172,16 +162,13 @@ SinglePlayerScreen::SinglePlayerScreen(
     weatherLayout->addWidget(weatherLabel);
     weatherLayout->addWidget(weatherCombo);
     weatherLayout->addLayout(tempLayout);
-
     weatherLayout->addStretch();
     weatherLayout->setAlignment(Qt::AlignTop);
     weatherLayout->setContentsMargins(0,0,0,0);
 
     // ---------------- TRACK CONDITIONS ----------------
     QVBoxLayout* trackCondLayout = new QVBoxLayout;
-
     QLabel* trackCondLabel = new QLabel("Track");
-
     QComboBox* trackCondCombo = new QComboBox;
     trackCondCombo->setMaximumWidth(220);
     trackCondCombo->addItems({"Green","Fast","Optimum","Greasy","Dusty"});
@@ -190,7 +177,6 @@ SinglePlayerScreen::SinglePlayerScreen(
     trackCondLayout->addWidget(trackCondCombo);
 
     QLabel* windLabel = new QLabel("Wind 16.6 km/h");
-
     QSlider* windSlider = new QSlider(Qt::Horizontal);
     windSlider->setRange(0,40);
     windSlider->setValue(16);
@@ -202,7 +188,6 @@ SinglePlayerScreen::SinglePlayerScreen(
 
     trackCondLayout->addWidget(windLabel);
     trackCondLayout->addWidget(windSlider);
-
     trackCondLayout->addStretch();
     trackCondLayout->setAlignment(Qt::AlignTop);
 
@@ -216,27 +201,40 @@ SinglePlayerScreen::SinglePlayerScreen(
 
     mainLayout->addLayout(layout);
     mainLayout->addStretch();
-
     setLayout(mainLayout);
 
+    // ---------------- CONNECTIONS ----------------
     connect(carButton, &QPushButton::clicked, this, &SinglePlayerScreen::openCarSelector);
+    connect(trackButton, &QPushButton::clicked, this, &SinglePlayerScreen::openTrackSelector);
 }
 
 void SinglePlayerScreen::openCarSelector()
 {
     CarSelectorDialog dlg(acManager,this);
-
     if(dlg.exec() == QDialog::Accepted)
     {
         selectedCar = dlg.getSelectedCar();
         selectedSkin = dlg.getSelectedSkin();
-
         std::string preview =
             acManager->getACPath() + "/content/cars/" +
             selectedCar + "/skins/" + selectedSkin + "/preview.jpg";
-
         QPixmap pix(QString::fromStdString(preview));
         carImage->setPixmap(pix);
         carName->setText(QString::fromStdString(selectedCar));
+    }
+}
+
+void SinglePlayerScreen::openTrackSelector()
+{
+    CircuitSelectorDialog dlg(acManager,this);
+    if(dlg.exec() == QDialog::Accepted)
+    {
+        selectedTrack = dlg.getSelectedCircuit();
+        std::string preview =
+            acManager->getACPath() + "/content/tracks/" +
+            selectedTrack + "/ui/preview.png";
+        QPixmap pix(QString::fromStdString(preview));
+        trackImage->setPixmap(pix);
+        trackName->setText(QString::fromStdString(selectedTrack));
     }
 }
